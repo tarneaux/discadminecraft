@@ -61,11 +61,3 @@ class Remote:
             with self.client as c:
                 c.sendall(command)
             sleep(1)
-
-
-r = Remote("localhost")
-print(r.start())
-while "Done" not in r.log():
-    sleep(3)
-print(r.log())
-print(r.stop())
