@@ -1,3 +1,4 @@
+import os.path
 import socket
 from subprocess import Popen, PIPE, STDOUT
 
@@ -14,11 +15,14 @@ class Minecraft:
             "log": self.log,
             "start": self.start,
             "previous_log": (lambda: self.previous_log),
-            "stop": self.stop
+            "stop": self.stop,
+            "status": self.status
         }
         self.socket_server()
 
     def minecraft_server(self):
+        if os.path.isfile("Minecraft/logs/latest.log"):
+            os.remove("Minecraft/logs/latest.log")
         self.server = Popen("./start.sh", cwd="Minecraft", stdin=PIPE, stdout=PIPE, stderr=STDOUT, shell=True)
         self.running = True
 
@@ -26,14 +30,18 @@ class Minecraft:
         if "Done" in self.log():
             self.server.stdin.write((command + "\r\n").encode("utf-8"))
             self.server.stdin.flush()
+        else:
+            return False
 
     def log(self):
+        log_file_fath = os.path.join(os.getcwd(), "Minecraft/logs/latest.log")
         if self.running:
-            while not self.outputted:
-                while not self.server.stdout.readline():
-                    pass
-                self.outputted = True
-            return open("/home/max/Servers/discadminecraft/Minecraft/logs/latest.log", "r").read()
+            if not self.outputted:
+                if os.path.isfile("Minecraft/logs/latest.log"):
+                    self.outputted = True
+                else:
+                    return ""
+            return open(log_file_fath, "r").read()
         else:
             return ""
 
@@ -46,16 +54,32 @@ class Minecraft:
 
     def stop(self):
         if self.running:
-            self.run("stop")
+            if self.run("stop") is False:
+                return "not running"
             self.server.communicate()
             self.running = False
             self.outputted = False
-            return self.log()
+            if os.path.isfile("Minecraft/logs/latest.log"):
+                return open(os.path.join(os.getcwd(), "Minecraft/logs/latest.log"), "r").read()
+            else:
+                return ""
         else:
             return "Already stopped"
 
+    def status(self):
+        if self.server.poll() is not None and self.running:
+            self.running = False
+            self.outputted = False
+            return "crashed"
+        if not self.running:
+            return "stopped"
+        if "Done" in self.log():
+            return "running"
+        return "starting"
+
     def socket_server(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.bind(("127.0.0.1", 25556))
             try:
                 while True:
@@ -75,7 +99,7 @@ class Minecraft:
                 print("Stopping Minecraft server...")
                 if self.running:
                     self.stop()
-                pass
+                s.close()
 
 
 Minecraft()
