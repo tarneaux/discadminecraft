@@ -26,7 +26,7 @@ class Wizard:
                 open("/sys/firmware/devicetree/base/model", "r").read().startswith("Raspberry Pi"):
             print("Detected running on " + open("/sys/firmware/devicetree/base/model", "r").read()
                   + ", starting Discord bot setup.")
-            self.setup_discord_bot()
+            return self.setup_discord_bot()
         else:
             print("Please choose the server you want to install:\n"
                   "1: Discord Bot\n"
