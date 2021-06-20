@@ -4,7 +4,7 @@ A discord bot to interact with your minecraft server.
 ## Install for Linux
 1. Install Java for your distribution.
 2. Clone the repo: `git clone https://github.com/tarneaux/discadminecraft`
-3. CD into id: `cd discadminecraft`
+3. CD into it: `cd discadminecraft`
 4. Run the setup script: `python3 main.py` <br>
 
 You should always have one instance of the Discord bot and one instance of the Minecraft server. <br>
