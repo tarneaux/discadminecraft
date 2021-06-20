@@ -13,4 +13,3 @@ The prefix for discord bot commands is `&`. <br>
 
 ## Contributing
 Open a pull request, and I'll be glad to accept modifications, especially for performance (starting the server currently takes 5x more time that without discadminecraft)
-<meta name="google-site-verification" content="hAvQa5lsw55ky64YTeeNzADJgkIQ9eGQcbAdVMls6xc" />
