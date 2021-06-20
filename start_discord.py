@@ -13,33 +13,33 @@ class Bot(commands.Bot):
 
         @self.command(name="start", help="Starts the Minecraft server.")
         async def start(ctx):
+            await self.verify_channel(ctx)
             if self.r.status() == "stopped" or self.r.status() == "crashed":
                 self.r.start()
                 await self.announcement_channel.send("Starting the Minecraft server.")
             else:
                 self.announcement_channel.send("Already started.")
-            await self.verify_channel(ctx)
 
         @self.command(name="status", help="Shows the current status of the Minecraft server.")
         async def status(ctx):
-            await self.announcement_channel.send("The server's current status is: " + self.r.status())
             await self.verify_channel(ctx)
+            await self.announcement_channel.send("The server's current status is: " + self.r.status())
 
         @self.command(name="stop", help="Stops the Minecraft server and displays its log.")
         async def stop(ctx):
+            await self.verify_channel(ctx)
             if self.r.status() == "running":
                 await self.announcement_channel.send("Stopping server.")
                 open("mclog.txt", "w").write(self.r.stop())
                 await self.announcement_channel.send("Server stopped", file=discord.File("mclog.txt"))
             else:
-                self.announcement_channel.send("Already stopped.")
-            await self.verify_channel(ctx)
+                await self.announcement_channel.send("Already stopped.")
 
         @self.command(name="log", help="Displays the Minecraft server's log.")
         async def log(ctx):
-            open("mclog.txt", "w").write(self.r.log())
-            await self.announcement_channel.send("Server stopped", file=discord.File("mclog.txt"))
             await self.verify_channel(ctx)
+            open("mclog.txt", "w").write(self.r.log())
+            await self.announcement_channel.send("", file=discord.File("mclog.txt"))
 
         @self.command(name="setchannel", help="Changes the bot channel.")
         async def setchannel(ctx):
