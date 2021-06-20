@@ -41,7 +41,7 @@ class AlreadyStoppedError(Exception):
 class Remote:
     def __init__(self, host):
         self.host = host
-        self.client = Client("localhost")
+        self.client = Client(self.host)
 
     def log(self):
         with self.client as c:
