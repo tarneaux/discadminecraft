@@ -67,10 +67,13 @@ class Minecraft:
             return "Already stopped"
 
     def status(self):
-        if self.server.poll() is not None and self.running:
-            self.running = False
-            self.outputted = False
-            return "crashed"
+        try:
+            if self.server.poll() is not None and self.running:
+                self.running = False
+                self.outputted = False
+                return "stopped"
+        except AttributeError:
+            pass
         if not self.running:
             return "stopped"
         if "Done" in self.log():

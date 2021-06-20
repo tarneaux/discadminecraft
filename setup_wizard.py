@@ -12,7 +12,6 @@ from time import sleep
 from subprocess import Popen
 
 
-
 class Wizard:
     """The main class."""
     def __init__(self):
@@ -165,7 +164,7 @@ class Wizard:
         os.system("clear")
         print("If you have not already set up the Minecraft server, please do it now. On start, it should show an IP.")
         while True:
-            server_address = input("What'_s that IP? ")
+            server_address = input("What's that IP? ")
             print("Trying to connect to the server...")
             t = Thread(target=self.ping_server, args=(server_address,))
             self.pingOk = False
@@ -175,9 +174,12 @@ class Wizard:
                 break
             else:
                 print("The ping to the server failed! Please verify it is running and the IP is correct.")
+        os.system("clear")
+        print("The setup is now done. Starting the bot...")
         return {
             "server_command": "start_discord.py",
-            "server_address": server_address
+            "server_address": server_address,
+            "bot_channel": None
         }
 
     # Tests if the given IP has a Minecraft server running with the discadminecraft program.

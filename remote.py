@@ -29,11 +29,14 @@ class Client:
             data = data[:-1]
         return data
 
+
 class NotRunningError(Exception):
     pass
 
+
 class AlreadyStoppedError(Exception):
     pass
+
 
 class Remote:
     def __init__(self, host):
@@ -60,7 +63,6 @@ class Remote:
             c.sendall("stop")
             response = c.recvall()
             return response
-
 
     def run(self, command: str):
         if command:
