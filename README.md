@@ -1,1 +1,1 @@
-Moved to (boa-mc)[github.com/boa-mc]
+Moved to (boa-mc)[https://www.github.com/boa-mc]
